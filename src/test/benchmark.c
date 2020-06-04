@@ -41,7 +41,6 @@
 #include <nautilus/nautilus.h>
 #include <nautilus/irq.h>
 #include <nautilus/cpu.h>
-#include <nautilus/libccompat.h>
 #include <nautilus/mwait.h>
 #include <nautilus/thread.h>
 #include <nautilus/condvar.h>
@@ -51,6 +50,8 @@
 #include <nautilus/nemo.h>
 #include <nautilus/pmc.h>
 #include <nautilus/shell.h>
+
+#include <time.h>
 
 #endif
 

@@ -41,8 +41,8 @@
 #include <nautilus/limits.h>
 #include <nautilus/paging.h>
 #include <nautilus/errno.h>
-#include <nautilus/math.h>
 #include <nautilus/vc.h>
+#include <math.h>
 
 // All output is handled via the virtual console
 #define do_putchar(x) do { nk_vc_putchar(x);} while (0)

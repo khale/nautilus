@@ -37,7 +37,6 @@ obj-y += \
 	cpu.o \
 	acpi.o \
 	numa.o \
-	libccompat.o \
 	nemo.o \
 	pmc.o \
 	setjmp.o \
@@ -55,7 +54,9 @@ obj-y += \
 	linker.o \
 	prog.o \
 	getopt.o \
-	cmdline.o
+	cmdline.o \
+	libccompat.o \
+	syscall.o
 
 obj-$(NAUT_CONFIG_PROFILE) += instrument.o
 obj-$(NAUT_CONFIG_XEON_PHI) += sfi.o

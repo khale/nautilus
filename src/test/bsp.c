@@ -1,6 +1,5 @@
 #include <nautilus/nautilus.h>
 #include <nautilus/scheduler.h>
-#include <nautilus/libccompat.h>
 #include <nautilus/naut_string.h>
 #include <nautilus/spinlock.h>
 #include <nautilus/condvar.h>

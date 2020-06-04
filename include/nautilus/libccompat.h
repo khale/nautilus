@@ -35,7 +35,7 @@ extern "C" {
 #define UNDEF_FUN_ERR() 
 #endif
 
-#define RAND_MAX    2147483647
+//#define RAND_MAX    2147483647
 
 typedef int clockid_t;
 #define CLOCK_REALTIME                  0
@@ -51,6 +51,7 @@ typedef int clockid_t;
 #define CLOCK_SGI_CYCLE                 10      /* Hardware specific */
 #define CLOCK_TAI                       11
 
+/*
 //lua - ignore for now
 #define EOF 				0
 #define EXIT_FAILURE			0
@@ -70,7 +71,6 @@ typedef int clockid_t;
 #define stdout				((void*)1UL)
 #define stderr				((void*)2UL)
 
-// /* Standard streams.  */
 // extern struct _IO_FILE *stdin;		/* Standard input stream.  */
 // extern struct _IO_FILE *stdout;		/* Standard output stream.  */
 // extern struct _IO_FILE *stderr;		/* Standard error output stream.  */
@@ -113,7 +113,7 @@ struct timespec {
 	time_t  tv_sec;         /* seconds */
 	long    tv_nsec;        /* nanoseconds */
  };
- #endif /* _STRUCT_TIMESPEC */
+ #endif 
 
 #define SEEK_END  0
 
@@ -125,21 +125,22 @@ struct timespec {
 #define L_tmpnam	1024
 #define CLOCKS_PER_SEC	1000000l /* found from time.h*/
 
-extern int errno;
+//extern int errno;
 time_t time(time_t * timer);
 
 
 
-void abort(void) __attribute__((noreturn));
-int __popcountdi2(long long a);
-void exit(int status) __attribute__((noreturn));
 int clock_gettime(clockid_t, struct timespec*);
 void __assert_fail(const char*, const char*, unsigned, const char*);
+int __popcountdi2(long long a);
+#if 0
+void exit(int status) __attribute__((noreturn));
 int vfprintf(FILE*, const char*, va_list);
 int rand(void);
 void srand(unsigned int seed);
 void srand48(long int seedval);
 long int lrand48(void);
+void abort(void) __attribute__((noreturn));
 double drand48(void);
 char * strerror(int);
 
@@ -328,6 +329,7 @@ GEN_HDR(mbsnrtowcs)
 GEN_HDR(pthread_mutex_init)
 GEN_HDR(pthread_mutex_unlock)
 GEN_HDR(pthread_mutex_lock)
+#endif
 #ifdef __cplusplus
 }
 #endif

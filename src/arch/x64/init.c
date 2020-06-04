@@ -51,7 +51,6 @@
 #include <nautilus/acpi.h>
 #include <nautilus/atomic.h>
 #include <nautilus/mm.h>
-#include <nautilus/libccompat.h>
 #include <nautilus/barrier.h>
 #include <nautilus/vc.h>
 #include <nautilus/dev.h>
@@ -240,6 +239,11 @@ runtime_init (void)
 
 #ifdef NAUT_CONFIG_OPENMP_RT
 	nk_openmp_init();
+#endif
+
+#ifdef NAUT_CONFIG_C_RT
+    char * _dummy[] = {"dummy", NULL};
+    libc_start(1, _dummy, NULL);
 #endif
 	
 }

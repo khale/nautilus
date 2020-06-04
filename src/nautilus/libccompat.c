@@ -39,7 +39,7 @@
 #include <dev/hpet.h>
 
 
-int errno=0;
+//int errno=0;
 
 #define GEN_DEF(x) \
     int x (void) { \
@@ -108,6 +108,7 @@ struct lconv {
 //=========================================================
 static uint64_t dummy_mono_clock = 0;
 
+/*
 time_t 
 time (time_t * timer)
 {
@@ -119,41 +120,48 @@ time (time_t * timer)
     }
     return tp.tv_nsec;
 }
+*/
 
 
+/*
 void 
 abort(void) 
 {
     printk("Thread called abort\n");
     nk_thread_exit(NULL);
 }
+*/
 
 
+/*
 int 
 __popcountdi2 (long long a)
 {
     unsigned long long x2 = (unsigned long long)a;
     x2 = x2 - ((x2 >> 1) & 0x5555555555555555uLL);
-    /* Every 2 bits holds the sum of every pair of bits (32) */
+    // Every 2 bits holds the sum of every pair of bits (32) 
     x2 = ((x2 >> 2) & 0x3333333333333333uLL) + (x2 & 0x3333333333333333uLL);
-    /* Every 4 bits holds the sum of every 4-set of bits (3 significant bits) (16) */
+    // Every 4 bits holds the sum of every 4-set of bits (3 significant bits) (16) 
     x2 = (x2 + (x2 >> 4)) & 0x0F0F0F0F0F0F0F0FuLL;
-    /* Every 8 bits holds the sum of every 8-set of bits (4 significant bits) (8) */
+    // Every 8 bits holds the sum of every 8-set of bits (4 significant bits) (8) 
     unsigned x = (unsigned)(x2 + (x2 >> 32));
-    /* The lower 32 bits hold four 16 bit sums (5 significant bits). */
-    /*   Upper 32 bits are garbage */
+    // The lower 32 bits hold four 16 bit sums (5 significant bits). 
+    //   Upper 32 bits are garbage 
     x = x + (x >> 16);
-    /* The lower 16 bits hold two 32 bit sums (6 significant bits). */
-    /*   Upper 16 bits are garbage */
-    return (x + (x >> 8)) & 0x0000007F;  /* (7 significant bits) */
+    // The lower 16 bits hold two 32 bit sums (6 significant bits). 
+    //   Upper 16 bits are garbage 
+    return (x + (x >> 8)) & 0x0000007F;  // (7 significant bits) 
 }
+*/
 
+/*
 void 
 exit(int status)
 {
     printk("Thread called exit (status=%d)\n", status);
     nk_thread_exit((void*)(long)status);
 }
+*/
 
 int 
 clock_gettime (clockid_t clk_id, struct timespec * tp)
@@ -199,6 +207,7 @@ __assert_fail (const char * assertion, const char * file, unsigned line, const c
 }
 
 
+/*
 int 
 vfprintf (FILE * stream, const char * format, va_list arg)
 {
@@ -226,8 +235,6 @@ srand (unsigned int seed)
 }
     
 
-/* NOTE: these are likely not in any way compliant
- */
 void
 srand48 (long int seedval)
 {
@@ -667,7 +674,7 @@ void *memchr(const void *str, int c, size_t n)
 {
     return NULL;
 }
-/*void longjmp(int *x, int __y)
+void longjmp(int *x, int __y)
 {
     UNDEF_FUN_ERR();
 }
@@ -675,7 +682,7 @@ void *memchr(const void *str, int c, size_t n)
 int setjmp(int *x)
 {
     return 0;
-} */
+} 
 double fabs(double __x){
     return abs(__x);
 }
@@ -721,7 +728,6 @@ int ischar(unsigned char *str)
 
 // strtod is implemented in dtoa.c
 
-/*----------*/
 double abs(double x)
 {
 //should return absolute value of x
@@ -811,7 +817,6 @@ double exp(double x)
 return x;
 }
 
-/* became lazy... */
 GEN_DEF(writev)
 GEN_DEF(ungetwc)
 GEN_DEF(__errno_location)
@@ -878,3 +883,4 @@ GEN_DEF(strxfrm)
 GEN_DEF(wcsxfrm)
 GEN_DEF(__kernel_standard);
 GEN_DEF(__get_cpu_features);
+*/

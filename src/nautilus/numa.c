@@ -28,13 +28,14 @@
 #include <nautilus/errno.h>
 #include <nautilus/list.h>
 #include <nautilus/percpu.h>
-#include <nautilus/math.h>
 #include <nautilus/paging.h>
 #include <nautilus/mm.h>
 #include <nautilus/atomic.h>
 #include <nautilus/naut_string.h>
 #include <nautilus/multiboot2.h>
 #include <dev/apic.h>
+
+#include <nautilus/naut_math.h>
 
 
 #ifndef NAUT_CONFIG_DEBUG_NUMA

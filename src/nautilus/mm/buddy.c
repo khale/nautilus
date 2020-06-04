@@ -28,11 +28,14 @@
 #include <nautilus/buddy.h>
 #include <nautilus/naut_types.h>
 #include <nautilus/list.h>
+#include <nautilus/naut_math.h>
 #include <nautilus/naut_assert.h>
-#include <nautilus/math.h>
 #include <nautilus/macros.h>
 
 #include <lib/bitmap.h>
+
+
+#include <math.h>
 
 #ifndef NAUT_CONFIG_DEBUG_BUDDY
 #undef DEBUG_PRINT

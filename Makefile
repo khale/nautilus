@@ -353,7 +353,6 @@ endif
 
 
 COMMON_FLAGS :=-fno-omit-frame-pointer \
-			   -ffreestanding \
 			   -fno-stack-protector \
 			   -fno-strict-aliasing \
                            -fno-strict-overflow \
@@ -403,7 +402,6 @@ CXXFLAGS := $(COMMON_FLAGS) \
 			-fno-rtti 
 
 CFLAGS:=   $(COMMON_FLAGS) \
-		   -Wall \
 		   -Wno-unused-function \
 		   -Wno-unused-variable \
 		   -fno-common \
@@ -615,6 +613,11 @@ endif # NAUT_CONFIG_CXX_SUPPORT
 			   #/usr/lib64/libsupc++.a \
 
 			   #/usr/lib64/libc.a \
+
+ifdef NAUT_CONFIG_C_RT
+	#libs-y += newlib/libc.a newlib/libm.a newlib/libg.a newlib/libnosys.a
+	libs-y += newlib/crt0.o newlib/libc.a newlib/libm.a newlib/libg.a newlib/libnosys.a
+endif
 
 ifdef NAUT_CONFIG_PALACIOS
   PALACIOS_DIR=$(subst ",,$(NAUT_CONFIG_PALACIOS_DIR))

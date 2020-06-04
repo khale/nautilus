@@ -1316,6 +1316,11 @@ menu "Runtimes"
             depends on NDPC_RT
             help 
               Include NDPC simple tests 
+	config NESL_RT
+          bool  "NESL RT"
+	  default n
+	  help
+	     Include the NESL run-time (VCODE engine)
 
 	config NESL_RT
           bool  "NESL RT"
@@ -1342,6 +1347,12 @@ menu "Runtimes"
 	  default n
 	  help
 	      Include the GOMP-compatible OpenMP run-time
+
+        config C_RT
+        bool "C Runtime (via newlib)"
+        default n
+        help
+          Include Newlib's C runtime for Nautilus
 
         choice
 	    depends on OPENMP_RT

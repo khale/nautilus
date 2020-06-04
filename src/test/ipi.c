@@ -25,7 +25,7 @@
 #include <nautilus/cpu.h>
 #include <nautilus/percpu.h>
 #include <nautilus/atomic.h>
-#include <nautilus/math.h>
+#include <nautilus/naut_math.h>
 #include <nautilus/naut_assert.h>
 #include <nautilus/fs.h>
 #include <nautilus/fprintk.h>

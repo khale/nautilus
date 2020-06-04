@@ -32,7 +32,7 @@
 #include <nautilus/spinlock.h>
 #include <nautilus/macros.h>
 #include <nautilus/naut_assert.h>
-#include <nautilus/math.h>
+#include <nautilus/naut_math.h>
 #include <nautilus/intrinsics.h>
 #include <nautilus/percpu.h>
 #include <nautilus/shell.h>

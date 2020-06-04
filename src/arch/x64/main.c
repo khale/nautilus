@@ -30,7 +30,7 @@
  * only used if this is an HRT 
  */
 void 
-main (unsigned long mbd, 
+kernel_main (unsigned long mbd, 
       unsigned long magic)
 
 {
