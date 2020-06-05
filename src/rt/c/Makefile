@@ -1,3 +1,3 @@
 
-CFLAGS += -I../../../newlib_inc
-obj-y += test.o 
+CFLAGS += -I/opt/nautilus/sysroot/usr/include
+obj-y += test.o crt.o

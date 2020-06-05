@@ -242,7 +242,9 @@ runtime_init (void)
 #endif
 
 #ifdef NAUT_CONFIG_C_RT
-    char * _dummy[] = {"dummy", NULL};
+    char * _dummy[2] = {"dummy", 0};
+    extern int libc_start(int, char**, char**);
+    // we never come back from this
     libc_start(1, _dummy, NULL);
 #endif
 	

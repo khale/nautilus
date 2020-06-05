@@ -58,7 +58,7 @@
 #define ULONG_MAX   (~0UL)
 #endif
 #ifndef LLONG_MAX
-#define LLONG_MAX   ((long long)(~0ULL>>1))
+#define LLONG_MAX   (((~0ULL)>>1))
 #endif
 #ifndef LLONG_MIN
 #define LLONG_MIN   (-LLONG_MAX - 1)

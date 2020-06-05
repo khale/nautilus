@@ -177,7 +177,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/  )
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 
 ARCH		?= $(SUBARCH)
-CROSS_COMPILE	?= 
+CROSS_COMPILE	?= /opt/nautilus/cross/bin/x86_64-nautilus-
 #CROSS_COMPILE	?= /home/kyle/opt/cross/bin/x86_64-elf-
 
 # Architecture as present in compile.h
@@ -287,7 +287,7 @@ OBJCOPY		= $(CROSS_COMPILE)objcopy
 OBJDUMP		= $(CROSS_COMPILE)objdump
 
 CPP		= $(CC) -E
-GRUBMKRESCUE    = $(CROSS_COMPILE)grub-mkrescue
+GRUBMKRESCUE    = grub-mkrescue
 AWK		= awk
 GENKSYMS	= scripts/genksyms/genksyms
 DEPMOD		= /sbin/depmod
@@ -405,6 +405,7 @@ CFLAGS:=   $(COMMON_FLAGS) \
 		   -Wno-unused-function \
 		   -Wno-unused-variable \
 		   -fno-common \
+		   -march=native \
 		   -Wstrict-overflow=5 
 
 #                   -Wextra \
@@ -599,7 +600,8 @@ ifeq ($(CROSS_COMPILE)a, a)
 # guess where the std libs are 
   libs-y += `locate libstdc++.a | head -1`
 else
-  libs-y += $(CROSS_COMPILE)/../lib64/libstdc++.a
+  #libs-y += $(CROSS_COMPILE)/../lib64/libstdc++.a
+  libs-y += /opt/nautilus/cross/x86_64-nautilus/lib/libstdc++.a
 endif
 else
   libs-y += $(NAUT_CONFIG_TOOLCHAIN_ROOT)/lib64/libstdc++.a
@@ -615,8 +617,8 @@ endif # NAUT_CONFIG_CXX_SUPPORT
 			   #/usr/lib64/libc.a \
 
 ifdef NAUT_CONFIG_C_RT
-	#libs-y += newlib/libc.a newlib/libm.a newlib/libg.a newlib/libnosys.a
-	libs-y += newlib/crt0.o newlib/libc.a newlib/libm.a newlib/libg.a newlib/libnosys.a
+	CROSS:=/opt/nautilus/sysroot/usr/lib
+	libs-y += $(CROSS)/crt0.o $(CROSS)/libc.a $(CROSS)/libm.a $(CROSS)/libg.a $(CROSS)/libnosys.a
 endif
 
 ifdef NAUT_CONFIG_PALACIOS

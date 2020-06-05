@@ -1,8 +1,8 @@
 #include <nautilus/nautilus.h>
 #include <nautilus/syscall.h>
-
+#include <nautilus/shutdown.h>
 
 void sys_exit(int arg)
 {
-    nk_vc_printf("Got to exit!\n");
+    qemu_shutdown_with_code(arg);
 }
