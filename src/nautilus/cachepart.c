@@ -35,6 +35,7 @@
 #include <nautilus/msr.h>
 #include <nautilus/thread.h>
 #include <nautilus/shell.h>
+#include <nautilus/semaphore.h>
 #include <test/cachepart.h>
 
 
@@ -89,7 +90,7 @@ typedef struct _cos_update {
 // One shared table across system tracks all
 // current partitions and their refcounts
 static struct {
-    spinlock_t lock;
+    struct nk_semaphore * lock;
 
     // are we functonal?
     uint8_t    usable;
@@ -120,9 +121,9 @@ int _nk_cache_part_has_cat = 0;
 static spinlock_t    group_state_lock;
 
 
-#define GLOBAL_LOCK_CONF uint8_t _global_flags=0
-#define GLOBAL_LOCK() _global_flags = spin_lock_irq_save(&cachetable.lock)
-#define GLOBAL_UNLOCK() spin_unlock_irq_restore(&cachetable.lock,_global_flags)
+#define GLOBAL_LOCK_CONF 
+#define GLOBAL_LOCK() nk_semaphore_down(cachetable.lock)
+#define GLOBAL_UNLOCK() nk_semaphore_up(cachetable.lock)
 
 #define CEIL_DIV(x,y)  (((x)/(y)) + !!((x)%(y)))
 
@@ -175,25 +176,29 @@ int nk_cache_part_init(uint32_t thread_default_percent, uint32_t interrupt_perce
     int maximum_leaf;
 
     DEBUG("init\n");
+
+    if (!is_intel()) {
+        ERROR("Cache partitioning only enabled for Intel processors\n");
+        return -1;
+    }
     
     /* Initialize Cachetable */
     memset(&cachetable, 0, sizeof(cachetable));
 
-    spinlock_init(&cachetable.lock);
-
-    spinlock_init(&group_state_lock);
-    
-    if (!is_intel()) {
-        DEBUG("Only works for intel processor\n");
+    cachetable.lock = nk_semaphore_create(NULL, 1, NK_SEMAPHORE_DEFAULT, NULL);
+    if (!cachetable.lock) {
+        ERROR("Could not create cachetable lock\n");
         return -1;
     }
+
+    spinlock_init(&group_state_lock);
     
     /* Check for CAT using CPUID */
     maximum_leaf = cpuid_leaf_max();
     DEBUG("Maximum leaf is %d\n", maximum_leaf);
 
     if (maximum_leaf < 0x7) {
-        DEBUG("CPU cannot have RDT\n");
+        ERROR("CPU cannot have RDT\n");
         return -1;
     }
 
@@ -206,7 +211,7 @@ int nk_cache_part_init(uint32_t thread_default_percent, uint32_t interrupt_perce
     if (id.b & 0x8000) {
         DEBUG("CPU has RDT (PQE = 1) - checking for CAT\n");
     } else {
-        DEBUG("CPU does not have RDT (PQE = 0)\n");
+        ERROR("CPU does not have RDT (PQE = 0)\n");
         return -1;
     }
 
@@ -222,7 +227,7 @@ int nk_cache_part_init(uint32_t thread_default_percent, uint32_t interrupt_perce
         cpuid_sub(0x10, 1, &id);
         DEBUG("L3 info\n");
     } else {
-	DEBUG("CPU does not have L3 info - failing\n");
+	ERROR("CPU does not have L3 info - failing\n");
 	return -1;
     }
 
@@ -370,7 +375,7 @@ int nk_cache_part_acquire(uint32_t percent)
     DEBUG("acquire %u%% current cos is %u\n",percent,cos_index);
 
     if (!cachetable.usable || percent > 100) {
-	GLOBAL_UNLOCK();
+	GLOBAL_UNLOCK(); // KCH: why is there a global unlock here??
 	ERROR("Cache partitioning disabled or impossible request\n");
 	return -1;
     }
@@ -525,6 +530,13 @@ static int is_intel(void)
     return !strncmp(name, "GenuineIntel", 13);
 }
 
+
+// KCH: there is a nasty race condition here that can lead to deadlock.  This
+// happens if two threads (on different cores) are trying to acquire the global
+// lock. They both turn of interrupts when they wait on the lock. The first one
+// needs to send an IPI to the other one (in fact all others), but the other
+// one has interrupts off, so it won't handle the IPI, and thus won't release
+// the sender from its wait loop, thus deadlock. QED
 
 // this must be invoked with the lock held
 // must be holding lock
