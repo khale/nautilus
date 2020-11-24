@@ -3,7 +3,7 @@ import re
 import sys
 
 with open(sys.argv[1], "r") as f:
-    print("# trial,sc,dc,latency")
+    print("trial,sc,dc,latency")
     for line in f.readlines():
         if re.match('SC: \d+.*', line) is None:
             continue
